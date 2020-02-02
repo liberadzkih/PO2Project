@@ -12,7 +12,7 @@ public class Main extends Application {
         UserGuiController userGuiController = new UserGuiController(username, userpath);
         userGuiController.showStage();
     }
-    
+
     // java Main.java user1 C:\Users\Hlibe\Desktop\directory
     public static void main(String[] args) {
         launch(args);
