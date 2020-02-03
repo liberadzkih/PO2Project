@@ -173,7 +173,9 @@ public class UserGuiController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Wybierz plik");
         File file = fileChooser.showOpenDialog(thisStage);
-        Files.copy(file.toPath(), Paths.get(this.user_path.getText() + "\\" + file.getName()), StandardCopyOption.REPLACE_EXISTING);
+        Path sourceFile = file.toPath();
+        Path destFile = Paths.get(this.user_path.getText() + "\\" + file.getName());
+        Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
         refreshFiles();
     }
 
