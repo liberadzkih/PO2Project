@@ -9,7 +9,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         setUserParameters(getParameters());
-        UserGuiController userGuiController = new UserGuiController(username, userpath);
+        User user = new User(username, userpath);
+        UserGuiController userGuiController = new UserGuiController(user);
         userGuiController.showStage();
     }
 

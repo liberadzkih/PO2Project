@@ -10,49 +10,37 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.nio.file.StandardCopyOption;
 
 public class UserGuiController {
     private final Stage thisStage;
-
+    private User user;
     @FXML
     private ComboBox<String> users_combobox;
-    String[] users = {"user1", "user2", "user3", "user4", "user5"};
-
     @FXML
-    private Button share_button, en_button, pl_button, gr_button, addNewFileButton, deleteSelectedFileButton, refreshButton;
-
+    private Button share_button, en_button, pl_button, gr_button, addNewFile_button, deleteSelectedFile_button, refresh_button;
     @FXML
-    private Label user_name, user_path, txt1, txt2, txt3;
-
+    private Label user_name_label, user_path_label, txt1_label, txt2_label, txt3_label;
     @FXML
-    private ListView files_list;
-    private List<String> file_paths;
-    private List<String> file_names;
-
+    private ListView files_list_listView;
     @FXML
-    private Label current_status;
+    private Label current_status_label;
 
-    private String current_language;
-    private final String[] languages = {"en", "pl", "gr"};
-
-    public UserGuiController(String user_name, String user_path) {
+    public UserGuiController(User user) {
+        this.user = user;
         thisStage = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("user_gui.fxml"));
             loader.setController(this);
             thisStage.setScene(new Scene(loader.load(), 600, 400));
-            thisStage.setTitle(user_name);
-            this.user_name.setText(user_name);
-            this.user_path.setText(user_path);
-            this.users_combobox.getItems().addAll(users);
-            this.users_combobox.getSelectionModel().selectFirst();
-            loadFiles(user_path);
-            this.files_list.getItems().addAll(file_names);
+            thisStage.setTitle(this.user.getUsername());
+            user_name_label.setText(this.user.getUsername());
+            user_path_label.setText(this.user.getDirectoryPath());
+            String[] users = {"user1", "user2", "user3", "user4", "user5"};
+            users_combobox.getItems().addAll(users);
+            users_combobox.getSelectionModel().selectFirst();
+            loadFiles();
+            files_list_listView.getItems().addAll(this.user.getFile_names());
             setLanguagePolish();
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,23 +57,10 @@ public class UserGuiController {
     /**
      * Loading files from user directory path
      * If path is wrong displays Error Alert window
-     *
-     * @param _path - user directory path
      */
-    public void loadFiles(String _path) {
-        try (Stream<Path> walk = Files.walk(Paths.get(_path))) {
-
-            List<String> result = walk.filter(Files::isRegularFile)
-                    .map(x -> x.toString()).collect(Collectors.toList());
-
-            file_paths = new ArrayList<>();
-            file_names = new ArrayList<>();
-
-            for (String s : result) {
-                file_paths.add(s);
-                file_names.add(Paths.get(s).getFileName().toString());
-            }
-
+    public void loadFiles() {
+        try {
+            user.loadFilesFromUserDirectory();
         } catch (NoSuchFileException e) {
             errorAlert("Błąd!", "Podana ścieżka jest niepoprawna!");
             System.exit(0);
@@ -113,17 +88,17 @@ public class UserGuiController {
      */
     private void updateGuiToCurrentLanguage() {
         try {
-            File file = new File("src/sample/language_files/" + this.current_language + "_gui.txt");
+            File file = new File("src/sample/language_files/" + this.user.getLanguage() + "_gui.txt");
             List<String> lines = Files.readAllLines(Paths.get(file.getAbsolutePath()));
-            System.out.println("Language set to: " + this.current_language);
-            this.txt1.setText(lines.get(0));
-            this.txt2.setText(lines.get(1));
-            this.txt3.setText(lines.get(2));
-            this.share_button.setText(lines.get(3));
-            this.current_status.setText(lines.get(4));
-            this.addNewFileButton.setText(lines.get(7));
-            this.deleteSelectedFileButton.setText(lines.get(8));
-            this.refreshButton.setText(lines.get(9));
+            System.out.println("Language set to: " + this.user.getLanguage());
+            txt1_label.setText(lines.get(0));
+            txt2_label.setText(lines.get(1));
+            txt3_label.setText(lines.get(2));
+            share_button.setText(lines.get(3));
+            current_status_label.setText(lines.get(4));
+            addNewFile_button.setText(lines.get(7));
+            deleteSelectedFile_button.setText(lines.get(8));
+            refresh_button.setText(lines.get(9));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,35 +106,33 @@ public class UserGuiController {
 
     @FXML
     public void setLanguageEnglish() {
-        this.current_language = this.languages[0];
+        this.user.setLanguage("en");
         updateGuiToCurrentLanguage();
     }
 
     @FXML
     public void setLanguageGerman() {
-        this.current_language = this.languages[2];
+        this.user.setLanguage("gr");
         updateGuiToCurrentLanguage();
     }
 
     @FXML
     public void setLanguagePolish() {
-        this.current_language = this.languages[1];
+        this.user.setLanguage("pl");
         updateGuiToCurrentLanguage();
     }
 
     @FXML
     public void refreshFiles() {
-        loadFiles(user_path.getText());
-        this.files_list.getItems().clear();
-        this.files_list.getItems().addAll(file_names);
+        loadFiles();
+        files_list_listView.getItems().clear();
+        files_list_listView.getItems().addAll(this.user.getFile_names());
     }
 
     @FXML
     public void deleteSelectedFile() {
         try {
-            String fileToDelete = this.files_list.getSelectionModel().getSelectedItem().toString();
-            String pathToDelete = this.user_path.getText() + "\\" + fileToDelete;
-            Files.deleteIfExists(Paths.get(pathToDelete));
+            user.deleteFile(this.files_list_listView.getSelectionModel().getSelectedItem().toString());
             refreshFiles();
         } catch (NullPointerException e) {
             errorAlert("Błąd", "Nie wybrano pliku");
@@ -170,13 +143,17 @@ public class UserGuiController {
 
     @FXML
     public void chooseFile() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Wybierz plik");
-        File file = fileChooser.showOpenDialog(thisStage);
-        Path sourceFile = file.toPath();
-        Path destFile = Paths.get(this.user_path.getText() + "\\" + file.getName());
-        Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
-        refreshFiles();
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Wybierz plik");
+            File file = fileChooser.showOpenDialog(thisStage);
+            Path sourceFile = file.toPath();
+            Path destFile = Paths.get(user.getDirectoryPath() + "\\" + file.getName());
+            Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
+            refreshFiles();
+        } catch (NullPointerException e) {
+            errorAlert("Błąd", "Nie wybrano pliku");
+        }
     }
 
 }

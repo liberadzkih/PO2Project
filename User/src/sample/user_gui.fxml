@@ -10,33 +10,33 @@
          <children>
             <HBox prefHeight="45.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="txt1" style="-fx-font-weight: bold;" text="User:  ">
+                  <Label fx:id="txt1_label" style="-fx-font-weight: bold;" text="User:  ">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>
-                  <Label fx:id="user_name" />
+                  <Label fx:id="user_name_label" />
                </children>
             </HBox>
             <HBox prefHeight="55.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="txt2" style="-fx-font-weight: bold;" text="Path:  ">
+                  <Label fx:id="txt2_label" style="-fx-font-weight: bold;" text="Path:  ">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>
-                  <Label fx:id="user_path" />
+                  <Label fx:id="user_path_label" />
                </children>
             </HBox>
-            <ListView fx:id="files_list" prefHeight="200.0" prefWidth="200.0">
+            <ListView fx:id="files_list_listView" prefHeight="200.0" prefWidth="200.0">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
                </VBox.margin></ListView>
-            <Label fx:id="current_status" text="Sprawdzam...">
+            <Label fx:id="current_status_label" text="Sprawdzam...">
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
                </VBox.margin></Label>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="txt3" text="Udostępnij zaznaczony plik:  ">
+                  <Label fx:id="txt3_label" text="Udostępnij zaznaczony plik:  ">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>
@@ -63,15 +63,15 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="addNewFileButton" mnemonicParsing="false" onAction="#chooseFile" text="Dodaj nowy plik">
+                  <Button fx:id="addNewFile_button" mnemonicParsing="false" onAction="#chooseFile" text="Dodaj nowy plik">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
-                  <Button fx:id="deleteSelectedFileButton" mnemonicParsing="false" onAction="#deleteSelectedFile" text="Usuń zaznaczony plik">
+                  <Button fx:id="deleteSelectedFile_button" mnemonicParsing="false" onAction="#deleteSelectedFile" text="Usuń zaznaczony plik">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
-                  <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshFiles" text="Odśwież">
+                  <Button fx:id="refresh_button" mnemonicParsing="false" onAction="#refreshFiles" text="Odśwież">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
