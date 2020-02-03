@@ -4,18 +4,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.nio.file.StandardCopyOption;
 
 public class UserGuiController {
     private final Stage thisStage;
@@ -167,6 +166,15 @@ public class UserGuiController {
         } catch (IOException e) {
             errorAlert("Błąd", "Nie można usunąć tego pliku");
         }
+    }
+
+    @FXML
+    public void chooseFile() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Wybierz plik");
+        File file = fileChooser.showOpenDialog(thisStage);
+        Files.copy(file.toPath(), Paths.get(this.user_path.getText() + "\\" + file.getName()), StandardCopyOption.REPLACE_EXISTING);
+        refreshFiles();
     }
 
 }

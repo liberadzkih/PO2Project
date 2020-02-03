@@ -63,7 +63,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="addNewFileButton" mnemonicParsing="false" text="Dodaj nowy plik">
+                  <Button fx:id="addNewFileButton" mnemonicParsing="false" onAction="#chooseFile" text="Dodaj nowy plik">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
