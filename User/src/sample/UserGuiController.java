@@ -106,19 +106,19 @@ public class UserGuiController {
 
     @FXML
     public void setLanguageEnglish() {
-        this.user.setLanguage("en");
+        user.setLanguage("en");
         updateGuiToCurrentLanguage();
     }
 
     @FXML
     public void setLanguageGerman() {
-        this.user.setLanguage("gr");
+        user.setLanguage("gr");
         updateGuiToCurrentLanguage();
     }
 
     @FXML
     public void setLanguagePolish() {
-        this.user.setLanguage("pl");
+        user.setLanguage("pl");
         updateGuiToCurrentLanguage();
     }
 
@@ -132,7 +132,7 @@ public class UserGuiController {
     @FXML
     public void deleteSelectedFile() {
         try {
-            user.deleteFile(this.files_list_listView.getSelectionModel().getSelectedItem().toString());
+            user.deleteFile(files_list_listView.getSelectionModel().getSelectedItem().toString());
             refreshFiles();
         } catch (NullPointerException e) {
             errorAlert("Błąd", "Nie wybrano pliku");
