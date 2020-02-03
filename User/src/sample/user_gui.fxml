@@ -61,6 +61,22 @@
                      </HBox.margin></Button>
                </children>
             </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="addNewFileButton" mnemonicParsing="false" text="Dodaj nowy plik">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="deleteSelectedFileButton" mnemonicParsing="false" onAction="#deleteSelectedFile" text="Usuń zaznaczony plik">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin></Button>
+                  <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshFiles" text="Odśwież">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin></Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

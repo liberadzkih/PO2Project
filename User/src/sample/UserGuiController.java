@@ -25,15 +25,15 @@ public class UserGuiController {
     String[] users = {"user1", "user2", "user3", "user4", "user5"};
 
     @FXML
-    private Button share_button, en_button, pl_button, gr_button;
+    private Button share_button, en_button, pl_button, gr_button, addNewFileButton, deleteSelectedFileButton, refreshButton;
 
     @FXML
     private Label user_name, user_path, txt1, txt2, txt3;
 
     @FXML
     private ListView files_list;
-    private List<String> file_paths = new ArrayList<>();
-    private List<String> file_names = new ArrayList<>();
+    private List<String> file_paths;
+    private List<String> file_names;
 
     @FXML
     private Label current_status;
@@ -79,6 +79,9 @@ public class UserGuiController {
             List<String> result = walk.filter(Files::isRegularFile)
                     .map(x -> x.toString()).collect(Collectors.toList());
 
+            file_paths = new ArrayList<>();
+            file_names = new ArrayList<>();
+
             for (String s : result) {
                 file_paths.add(s);
                 file_names.add(Paths.get(s).getFileName().toString());
@@ -119,6 +122,9 @@ public class UserGuiController {
             this.txt3.setText(lines.get(2));
             this.share_button.setText(lines.get(3));
             this.current_status.setText(lines.get(4));
+            this.addNewFileButton.setText(lines.get(7));
+            this.deleteSelectedFileButton.setText(lines.get(8));
+            this.refreshButton.setText(lines.get(9));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -140,6 +146,27 @@ public class UserGuiController {
     public void setLanguagePolish() {
         this.current_language = this.languages[1];
         updateGuiToCurrentLanguage();
+    }
+
+    @FXML
+    public void refreshFiles() {
+        loadFiles(user_path.getText());
+        this.files_list.getItems().clear();
+        this.files_list.getItems().addAll(file_names);
+    }
+
+    @FXML
+    public void deleteSelectedFile() {
+        try {
+            String fileToDelete = this.files_list.getSelectionModel().getSelectedItem().toString();
+            String pathToDelete = this.user_path.getText() + "\\" + fileToDelete;
+            Files.deleteIfExists(Paths.get(pathToDelete));
+            refreshFiles();
+        } catch (NullPointerException e) {
+            errorAlert("Błąd", "Nie wybrano pliku");
+        } catch (IOException e) {
+            errorAlert("Błąd", "Nie można usunąć tego pliku");
+        }
     }
 
 }

@@ -22,4 +22,5 @@ public class UserInfo {
     public void fillListView() {
         this.user_files_listview.getItems().addAll(file_names);
     }
+    
 }
