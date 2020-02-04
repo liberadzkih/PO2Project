@@ -15,5 +15,6 @@ public class FileServer {
         fileInputStream.read(bytes, 0, bytes.length);
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(bytes, 0, bytes.length);
+
     }
 }

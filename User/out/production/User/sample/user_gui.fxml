@@ -71,7 +71,7 @@
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>
-                  <Button fx:id="refresh_button" mnemonicParsing="false" onAction="#refreshFiles" text="Odśwież">
+                  <Button fx:id="refresh_button" mnemonicParsing="false" onAction="#updateFilesListView" text="Odśwież">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></Button>

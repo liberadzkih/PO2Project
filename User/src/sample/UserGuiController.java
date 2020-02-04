@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -40,7 +41,6 @@ public class UserGuiController {
             users_combobox.getItems().addAll(users);
             users_combobox.getSelectionModel().selectFirst();
             loadFiles();
-            files_list_listView.getItems().addAll(this.user.getFile_names());
             setLanguagePolish();
         } catch (IOException e) {
             e.printStackTrace();
@@ -123,17 +123,21 @@ public class UserGuiController {
     }
 
     @FXML
-    public void refreshFiles() {
-        loadFiles();
-        files_list_listView.getItems().clear();
-        files_list_listView.getItems().addAll(this.user.getFile_names());
+    public void updateFilesListView() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                files_list_listView.getItems().clear();
+                files_list_listView.getItems().addAll(user.getFile_names());
+            }
+        });
     }
 
     @FXML
     public void deleteSelectedFile() {
         try {
             user.deleteFile(files_list_listView.getSelectionModel().getSelectedItem().toString());
-            refreshFiles();
+            updateFilesListView();
         } catch (NullPointerException e) {
             errorAlert("Błąd", "Nie wybrano pliku");
         } catch (IOException e) {
@@ -150,7 +154,7 @@ public class UserGuiController {
             Path sourceFile = file.toPath();
             Path destFile = Paths.get(user.getDirectoryPath() + "\\" + file.getName());
             Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
-            refreshFiles();
+            updateFilesListView();
         } catch (NullPointerException e) {
             errorAlert("Błąd", "Nie wybrano pliku");
         }
