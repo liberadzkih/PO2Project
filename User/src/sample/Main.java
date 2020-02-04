@@ -11,7 +11,7 @@ public class Main extends Application {
         setUserParameters(getParameters());
         User user = new User(username, userpath);
         UserGuiController userGuiController = new UserGuiController(user);
-        UserImplementation userImplementation = new UserImplementation(user, userGuiController);
+        UserHandler userHandler = new UserHandler(user, userGuiController);
         userGuiController.showStage();
     }
 

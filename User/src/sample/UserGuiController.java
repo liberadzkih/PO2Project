@@ -1,12 +1,14 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,12 +37,10 @@ public class UserGuiController {
             loader.setController(this);
             thisStage.setScene(new Scene(loader.load(), 600, 400));
             thisStage.setTitle(this.user.getUsername());
+            thisStage.setOnCloseRequest(event -> System.exit(0));
             user_name_label.setText(this.user.getUsername());
             user_path_label.setText(this.user.getDirectoryPath());
-            String[] users = {"user1", "user2", "user3", "user4", "user5"};
-            users_combobox.getItems().addAll(users);
-            users_combobox.getSelectionModel().selectFirst();
-            loadFiles();
+            initUserComboBox();
             setLanguagePolish();
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,22 +52,6 @@ public class UserGuiController {
      */
     public void showStage() {
         thisStage.showAndWait();
-    }
-
-    /**
-     * Loading files from user directory path
-     * If path is wrong displays Error Alert window
-     */
-    public void loadFiles() {
-        try {
-            user.loadFilesFromUserDirectory();
-        } catch (NoSuchFileException e) {
-            errorAlert("Błąd!", "Podana ścieżka jest niepoprawna!");
-            System.exit(0);
-        } catch (IOException e) {
-            errorAlert("Błąd!", "Coś poszło nie tak!");
-            System.exit(0);
-        }
     }
 
     /**
@@ -158,6 +142,12 @@ public class UserGuiController {
         } catch (NullPointerException e) {
             errorAlert("Błąd", "Nie wybrano pliku");
         }
+    }
+
+    public void initUserComboBox(){
+        String[] users = {"user1", "user2", "user3", "user4", "user5"};
+        users_combobox.getItems().addAll(users);
+        users_combobox.getSelectionModel().selectFirst();
     }
 
 }

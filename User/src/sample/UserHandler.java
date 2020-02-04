@@ -3,23 +3,28 @@ package sample;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UserImplementation {
+public class UserHandler {
     public User user;
     public UserGuiController userGuiController;
+    private boolean appStopped = false;
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public UserImplementation(User user, UserGuiController userGuiController) {
+    public UserHandler(User user, UserGuiController userGuiController) {
         this.user = user;
         this.userGuiController = userGuiController;
+        this.reloadFiles();
+    }
+
+    private void reloadFiles(){
         executorService.submit(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (!appStopped) {
                     try {
-                        Thread.sleep(2000);
                         System.out.println("Files loaded");
                         user.loadFilesFromUserDirectory();
                         userGuiController.updateFilesListView();
+                        Thread.sleep(2000);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
