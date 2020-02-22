@@ -47,11 +47,18 @@ public class Requester implements Runnable {
                 getFilesFromServer();
                 break;
             }
-            case INSERT_FILE: {
+            case INSERT_FILES: {
                 System.out.println("insert file");
                 input = socket.getInputStream();
                 sendRequestForSave(output);
-                sendFileToServer();
+                sendFilesToServer();
+                break;
+            }
+            case SHARE_FILE: {
+                System.out.println("share file");
+                input = socket.getInputStream();
+                sendRequestForSave(output);
+                sendOneFileToServer();
                 break;
             }
             case DELETE_FILE: {
@@ -121,16 +128,34 @@ public class Requester implements Runnable {
         }
     }
 
-    private void sendFileToServer() throws IOException {
+    private void sendOneFileToServer() throws IOException {
         String path = operationData.getFilePath().toString();
-        //File[] files = new File(directory).listFiles();
         File file = new File(path);
         BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
         DataOutputStream dos = new DataOutputStream(bos);
-        //dos.writeInt(files.length);
         dos.writeInt(1);
 
-        //for (File file : files) {
+        long length = file.length();
+        dos.writeLong(length);
+        String name = file.getName();
+        dos.writeUTF(name);
+        FileInputStream fis = new FileInputStream(file);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        int theByte = 0;
+        while ((theByte = bis.read()) != -1)
+            bos.write(theByte);
+        bis.close();
+        dos.close();
+    }
+
+    private void sendFilesToServer() throws IOException {
+        List<String> filesPaths = operationData.filesList;
+        BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+        DataOutputStream dos = new DataOutputStream(bos);
+        dos.writeInt(filesPaths.size());
+
+        for (String s : filesPaths) {
+            File file = new File(s);
             long length = file.length();
             dos.writeLong(length);
             String name = file.getName();
@@ -141,7 +166,7 @@ public class Requester implements Runnable {
             while ((theByte = bis.read()) != -1)
                 bos.write(theByte);
             bis.close();
-        //}
+        }
         dos.close();
     }
 }

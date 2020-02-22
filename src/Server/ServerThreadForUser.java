@@ -106,18 +106,21 @@ public class ServerThreadForUser implements Runnable {
         BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
         DataInputStream dis = new DataInputStream(bis);
         int filesCount = dis.readInt();
-        File[] files = new File[filesCount];
-
-        for (int i = 0; i < filesCount; i++) {
-            long fileLength = dis.readLong();
-            String fileName = dis.readUTF();
-            files[i] = new File(serverPath.resolve(username.trim()).resolve(fileName).toString());
-            FileOutputStream fos = new FileOutputStream(files[i]);
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            for (int j = 0; j < fileLength; j++)
-                bos.write(bis.read());
-            bos.close();
+        if (filesCount == 1) {
+            File[] files = new File[filesCount];
+            for (int i = 0; i < filesCount; i++) {
+                long fileLength = dis.readLong();
+                String fileName = dis.readUTF();
+                files[i] = new File(serverPath.resolve(username.trim()).resolve(fileName).toString());
+                FileOutputStream fos = new FileOutputStream(files[i]);
+                BufferedOutputStream bos = new BufferedOutputStream(fos);
+                for (int j = 0; j < fileLength; j++)
+                    bos.write(bis.read());
+                bos.close();
+            }
+            dis.close();
+        } else {
+            //dodać do queue z priority filesCount :|
         }
-        dis.close();
     }
 }

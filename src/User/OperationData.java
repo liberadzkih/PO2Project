@@ -1,14 +1,16 @@
 package User;
 
 import java.nio.file.Path;
+import java.util.List;
 
 public class OperationData {
-    enum Operation {DELETE_FILE, INSERT_FILE, GET_FILES}
+    enum Operation {DELETE_FILE, INSERT_FILES, GET_FILES, SHARE_FILE}
 
     private String userName;
     private Path filePath;
     private String targetUser;
     private Operation operation;
+    public List<String> filesList;
 
     public OperationData(String userName, Path filePath, String targetUser) {
         this.userName = userName;

@@ -89,7 +89,7 @@ public class UserController {
 
     @FXML
     public void shareFile() throws InterruptedException {
-        user.sendFileToServer(
+        user.sendFileToAnotherUser(
                 files_list_listView.getSelectionModel().getSelectedItem().toString(),
                 users_combobox.getSelectionModel().getSelectedItem()
         );

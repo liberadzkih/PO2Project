@@ -3,11 +3,9 @@ package User;
 import User.gui.UserController;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +22,7 @@ public class User {
     private Thread thread;
     public boolean isReadyForNextOperations = true;
     public boolean isFirstRun = true;
+    private List<String> filesToInsert;
 
     public User(Path userPath, String userName, UserController userController) throws InterruptedException {
         this.userController = userController;
@@ -46,19 +45,20 @@ public class User {
             userController.initUserDirectory(userFilesFromLocalDirectory);
 
             if (userFilesFromLocalDirectory.size() > userFilesFromServer.size()) {
-                List<String> filesToInsert = new ArrayList<>();
+                filesToInsert = new ArrayList<>();
                 filesToInsert.addAll(userFilesFromLocalDirectory);
                 Collections.sort(filesToInsert);
                 Collections.sort(userFilesFromServer);
                 filesToInsert.removeAll(userFilesFromServer);
                 filesToInsert.forEach(e -> System.out.println("Should send file: " + e));
-                filesToInsert.forEach(e -> {
+                /*filesToInsert.forEach(e -> {
                     try {
-                        sendFileToServer(Paths.get(e).getFileName().toString(), getUserName());
+                        sendFileToAnotherUser(Paths.get(e).getFileName().toString(), getUserName());
                     } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
-                });
+                });*/
+                sendFilesToServer(filesToInsert);
             }
 
         } catch (Exception e) {
@@ -86,16 +86,17 @@ public class User {
 
     public void sendFilesToServer(List<String> list) throws InterruptedException {
         OperationData operationData = new OperationData(userName, userPath, userName);
-        operationData.setOperation(OperationData.Operation.DELETE_FILE);
+        operationData.setOperation(OperationData.Operation.INSERT_FILES);
+        operationData.filesList = list;
         Requester requester = new Requester(this, userController, operationData);
         thread = new Thread(requester);
         thread.start();
         thread.join();
     }
 
-    public void sendFileToServer(String fileName, String targetUser) throws InterruptedException {
+    public void sendFileToAnotherUser(String fileName, String targetUser) throws InterruptedException {
         OperationData operationData = new OperationData(userName, userPath.resolve(fileName), targetUser);
-        operationData.setOperation(OperationData.Operation.INSERT_FILE);
+        operationData.setOperation(OperationData.Operation.SHARE_FILE);
         Requester requester = new Requester(this, userController, operationData);
         thread = new Thread(requester);
         thread.start();
