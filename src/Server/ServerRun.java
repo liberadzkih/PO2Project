@@ -12,9 +12,10 @@ public class ServerRun extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            new Thread(new Server()).start();
+            //new Thread(new Server()).start();
             ServerController serverController = new ServerController();
             serverController.showStage();
+            new Thread(new Server(serverController)).start();
             new Thread(() -> {
                 try {
                     while (true) {

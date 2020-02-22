@@ -1,27 +1,22 @@
 package Server;
 
+import Server.gui.ServerController;
 import User.OperationData;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ServerThreadForUser implements Runnable {
     private Socket socket;
     private OperationData operationData;
+    private ServerController serverController;
     Path serverPath = Paths.get("C:\\Users\\Hlibe\\OneDrive\\Pulpit\\po2_project_files\\server_files\\");
 
-    public ServerThreadForUser(Socket socket) {
+    public ServerThreadForUser(Socket socket, ServerController serverController) {
         this.socket = socket;
+        this.serverController = serverController;
     }
 
     @Override
@@ -41,6 +36,7 @@ public class ServerThreadForUser implements Runnable {
                     System.out.println("deleting file in directory " + infoString[1]);
                     byte[] delete = ("delete&" + infoString[2] + "&" + "yes" + "\n").getBytes();
                     socket.getOutputStream().write(delete, 0, delete.length);
+                    serverController.addToLogs("Użytkownik " + infoString[1] + " usunął plik " + infoString[2]);
                 } else {
                     byte[] delete = ("delete&" + infoString[2] + "&" + "no" + "\n").getBytes();
                     socket.getOutputStream().write(delete, 0, delete.length);
@@ -117,6 +113,7 @@ public class ServerThreadForUser implements Runnable {
                 for (int j = 0; j < fileLength; j++)
                     bos.write(bis.read());
                 bos.close();
+                serverController.addToLogs("Użytkownik " + username + " dodał plik " + fileName);
             }
             dis.close();
         } else {
@@ -129,6 +126,7 @@ public class ServerThreadForUser implements Runnable {
                 for (int j = 0; j < fileLength; j++)
                     bos.write(bis.read());
                 bos.close();
+                serverController.addToLogs("Użytkownik " + username + " dodał plik " + fileName);
                 Thread.sleep(2000);
             }
         }

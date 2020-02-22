@@ -70,17 +70,12 @@
                 </HBox>
                 <HBox prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button fx:id="addNewFile_button" mnemonicParsing="false" onAction="#addFileAction" text="Dodaj nowy plik">
+                        <Button fx:id="addNewFile_button" mnemonicParsing="false" onAction="#chooseFile" text="Dodaj nowy plik">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </Button>
                         <Button fx:id="deleteSelectedFile_button" mnemonicParsing="false" onAction="#deleteFileAction" text="Usuń zaznaczony plik">
-                            <HBox.margin>
-                                <Insets left="5.0" right="5.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button fx:id="refresh_button" mnemonicParsing="false" text="Odśwież">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0" />
                             </HBox.margin>

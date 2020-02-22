@@ -9,10 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class UserController {
@@ -83,8 +88,17 @@ public class UserController {
     }
 
     @FXML
-    public void addFileAction() {
-
+    public void chooseFile() throws IOException {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select file");
+            File file = fileChooser.showOpenDialog(thisStage);
+            Path sourceFile = file.toPath();
+            Path destFile = Paths.get(user.getUserPath().resolve(file.getName()).toString());
+            Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (NullPointerException e) {
+            //error alert nie wybrano pliku
+        }
     }
 
     @FXML

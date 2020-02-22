@@ -94,9 +94,11 @@ public class ServerController {
     }
 
     public void addToLogs(String text) {
-        int logsSize = logs_list.getItems().size();
-        if (logsSize > 9)
-            logs_list.getItems().remove(logsSize - 1);
-        logs_list.getItems().add(text);
+        Platform.runLater(() -> {
+            int logsSize = logs_list.getItems().size();
+            if (logsSize > 9)
+                logs_list.getItems().remove(1);
+            logs_list.getItems().add(text);
+        });
     }
 }

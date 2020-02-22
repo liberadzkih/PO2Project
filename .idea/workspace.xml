@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server/OperationData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server/Queuer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/ServerRun.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/ServerRun.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Server/ServerThreadForUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/ServerThreadForUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/User/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/User/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/gui/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/gui/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/User/gui/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/User/gui/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/User/gui/user_gui.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/User/gui/user_gui.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +106,7 @@
       <recent name="C:\Users\Hlibe\OneDrive\Pulpit\ProjektPo2\src\User\gui" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.ServerRun">
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
       <option name="MAIN_CLASS_NAME" />
@@ -237,22 +239,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="765" y="205" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1582390209444" />
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1582403525735">
+    <state width="1877" height="281" key="GridCell.Tab.0.bottom" timestamp="1582405445319">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582403525735" />
-    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1582403525735">
+    <state width="1877" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1582405445319" />
+    <state width="1877" height="281" key="GridCell.Tab.0.center" timestamp="1582405445319">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582403525735" />
-    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1582403525734">
+    <state width="1877" height="281" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1582405445319" />
+    <state width="1877" height="281" key="GridCell.Tab.0.left" timestamp="1582405445319">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582403525734" />
-    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1582403525735">
+    <state width="1877" height="281" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1582405445319" />
+    <state width="1877" height="281" key="GridCell.Tab.0.right" timestamp="1582405445319">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582403525735" />
+    <state width="1877" height="281" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1582405445319" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1582065040313">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
