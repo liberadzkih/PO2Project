@@ -52,7 +52,7 @@ public class ServerThreadForUser implements Runnable {
         } else if (infoString[0].trim().equals("save")) {
             try {
                 getFilesFromUser(infoString[1]);
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -102,12 +102,12 @@ public class ServerThreadForUser implements Runnable {
         return file.delete();
     }
 
-    private void getFilesFromUser(String username) throws IOException {
+    private void getFilesFromUser(String username) throws IOException, InterruptedException {
         BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
         DataInputStream dis = new DataInputStream(bis);
         int filesCount = dis.readInt();
+        File[] files = new File[filesCount];
         if (filesCount == 1) {
-            File[] files = new File[filesCount];
             for (int i = 0; i < filesCount; i++) {
                 long fileLength = dis.readLong();
                 String fileName = dis.readUTF();
@@ -120,7 +120,17 @@ public class ServerThreadForUser implements Runnable {
             }
             dis.close();
         } else {
-            //dodać do queue z priority filesCount :|
+            for (int i = 0; i < filesCount; i++) {
+                long fileLength = dis.readLong();
+                String fileName = dis.readUTF();
+                files[i] = new File(serverPath.resolve(username.trim()).resolve(fileName).toString());
+                FileOutputStream fos = new FileOutputStream(files[i]);
+                BufferedOutputStream bos = new BufferedOutputStream(fos);
+                for (int j = 0; j < fileLength; j++)
+                    bos.write(bis.read());
+                bos.close();
+                Thread.sleep(2000);
+            }
         }
     }
 }

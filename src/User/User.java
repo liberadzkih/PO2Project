@@ -51,13 +51,7 @@ public class User {
                 Collections.sort(userFilesFromServer);
                 filesToInsert.removeAll(userFilesFromServer);
                 filesToInsert.forEach(e -> System.out.println("Should send file: " + e));
-                /*filesToInsert.forEach(e -> {
-                    try {
-                        sendFileToAnotherUser(Paths.get(e).getFileName().toString(), getUserName());
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                });*/
+                
                 sendFilesToServer(filesToInsert);
             }
 
