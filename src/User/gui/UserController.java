@@ -40,7 +40,7 @@ public class UserController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("user_gui.fxml"));
             loader.setController(this);
-            thisStage.setScene(new Scene(loader.load(), 600, 400));
+            thisStage.setScene(new Scene(loader.load(), 500, 300));
             thisStage.setOnCloseRequest(event -> System.exit(0));
             initUserNames();
             languages = new Languages(Languages.Language.PL);

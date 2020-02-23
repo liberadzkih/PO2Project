@@ -7,12 +7,18 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerThreadForUser implements Runnable {
     private Socket socket;
     private OperationData operationData;
     private ServerController serverController;
     Path serverPath = Paths.get("C:\\Users\\Hlibe\\OneDrive\\Pulpit\\po2_project_files\\server_files\\");
+    Lock lock = new ReentrantLock();
 
     public ServerThreadForUser(Socket socket, ServerController serverController) {
         this.socket = socket;
@@ -78,7 +84,7 @@ public class ServerThreadForUser implements Runnable {
         dos.writeInt(files.length - 1);
 
         for (File file : files) {
-            if (!file.getName().equals(username.trim() + ".csv")) {
+            if (!file.getName().equals(username.trim() + ".txt")) {
                 long length = file.length();
                 dos.writeLong(length);
                 String name = file.getName();
@@ -89,6 +95,7 @@ public class ServerThreadForUser implements Runnable {
                 while ((theByte = bis.read()) != -1)
                     bos.write(theByte);
                 bis.close();
+                userTxtFileInsertFileName(username, file);
             }
         }
         dos.close();
@@ -97,10 +104,12 @@ public class ServerThreadForUser implements Runnable {
     private boolean deleteFile(String username, String filename) {
         String filePath = serverPath.resolve(username.trim()).resolve(filename.trim()).toString();
         File file = new File(filePath);
+        userTxtFileRemoveFileName(username, file);
         return file.delete();
     }
 
     private void getFilesFromUser(String username) throws IOException, InterruptedException {
+
         BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
         DataInputStream dis = new DataInputStream(bis);
         int filesCount = dis.readInt();
@@ -132,5 +141,49 @@ public class ServerThreadForUser implements Runnable {
                 Thread.sleep(2000);
             }
         }
+
+    }
+
+    private void userTxtFileInsertFileName(String username, File file) throws IOException {
+        lock.lock();
+        try {
+            String userTxtFilePath = serverPath.resolve(username.trim()).resolve(username.trim() + ".txt").toString();
+            BufferedReader in = new BufferedReader(new FileReader(userTxtFilePath));
+            String str;
+            List<String> list = new ArrayList<>();
+            while ((str = in.readLine()) != null)
+                list.add(str);
+            for (String line : list)
+                if (line.trim().equals(file.getName().trim()))
+                    return;
+            Writer output = new BufferedWriter(new FileWriter(userTxtFilePath, true));
+            output.append(file.getName() + "\n");
+            output.close();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private void userTxtFileRemoveFileName(String username, File file) {
+        lock.lock();
+        try {
+            String userTxtFilePath = serverPath.resolve(username.trim()).resolve(username.trim() + ".txt").toString();
+            Scanner sc = new Scanner(new File(userTxtFilePath));
+            StringBuffer buffer = new StringBuffer();
+            while (sc.hasNextLine()) {
+                buffer.append(sc.nextLine() + System.lineSeparator());
+            }
+            String fileContents = buffer.toString();
+            sc.close();
+            fileContents = fileContents.replaceAll(file.getName(), "");
+            FileWriter writer = new FileWriter(userTxtFilePath);
+            writer.append(fileContents);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+
     }
 }
