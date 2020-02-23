@@ -106,6 +106,7 @@ public class Requester implements Runnable {
                 bos.write(bis.read());
             bos.close();
             fileList.add(user.getUserPath().resolve(fileName).toString());
+            //Thread.sleep(2000);
         }
         dis.close();
         user.setUserFilesFromServer(fileList);

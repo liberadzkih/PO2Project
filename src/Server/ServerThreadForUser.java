@@ -75,19 +75,21 @@ public class ServerThreadForUser implements Runnable {
         File[] files = new File(directory).listFiles();
         BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
         DataOutputStream dos = new DataOutputStream(bos);
-        dos.writeInt(files.length);
+        dos.writeInt(files.length - 1);
 
         for (File file : files) {
-            long length = file.length();
-            dos.writeLong(length);
-            String name = file.getName();
-            dos.writeUTF(name);
-            FileInputStream fis = new FileInputStream(file);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            int theByte = 0;
-            while ((theByte = bis.read()) != -1)
-                bos.write(theByte);
-            bis.close();
+            if (!file.getName().equals(username.trim() + ".csv")) {
+                long length = file.length();
+                dos.writeLong(length);
+                String name = file.getName();
+                dos.writeUTF(name);
+                FileInputStream fis = new FileInputStream(file);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+                int theByte = 0;
+                while ((theByte = bis.read()) != -1)
+                    bos.write(theByte);
+                bis.close();
+            }
         }
         dos.close();
     }
