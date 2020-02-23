@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * Klasa wysyłająca odpowiednie requesty do serwera
+ */
 public class Requester implements Runnable {
     private UserController userController;
     private Socket socket;
@@ -33,6 +36,11 @@ public class Requester implements Runnable {
         }
     }
 
+    /**
+     * Lączenie z serwerem i wykonywanie odpowiednich funkcji/opreacji
+     *
+     * @throws IOException
+     */
     private void connectToServer() throws IOException {
         InetSocketAddress inetSocketAddress = new InetSocketAddress("127.0.0.1", 5000);
         socket.connect(inetSocketAddress, 1000);
@@ -77,18 +85,36 @@ public class Requester implements Runnable {
         socket.close();
     }
 
+    /**
+     * Wysyłanie zapytania o pliki użytkownika na serwer (getfiles&user1)
+     *
+     * @param output
+     * @throws IOException
+     */
     private void sendRequestForFiles(OutputStream output) throws IOException {
         byte[] request = ("getfiles" + "&" + operationData.getUserName() + "\n").getBytes();
         System.out.println("wysłano request o treści: " + new String(request));
         output.write(request, 0, request.length);
     }
 
+    /**
+     * Wysyłanie requestu zapisu pliku (save&user1)
+     * Można zapisać plik w swoim katalogu lub wysłać do innego użytkownika(udostępnienie)
+     *
+     * @param output
+     * @throws IOException
+     */
     private void sendRequestForSave(OutputStream output) throws IOException {
         byte[] request = ("save" + "&" + operationData.getTargetUser() + "\n").getBytes();
         System.out.println("wysłano request o treści: " + new String(request));
         output.write(request, 0, request.length);
     }
 
+    /**
+     * Przymowanie plików wysłanych przez serwer
+     *
+     * @throws IOException
+     */
     private void getFilesFromServer() throws IOException {
         List<String> fileList = new ArrayList<>();
         BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
@@ -112,6 +138,12 @@ public class Requester implements Runnable {
         user.setUserFilesFromServer(fileList);
     }
 
+    /**
+     * Wysyłanie zapytanie o usunięcie danego pliku(delete&user1&file1.txt)
+     *
+     * @param output
+     * @throws IOException
+     */
     public void sendRequestForDeleteFile(OutputStream output) throws IOException {
         String fileName = operationData.getFilePath().getFileName().toString();
         byte[] request = ("delete" + "&" + operationData.getUserName() + "&" + fileName + "\n").getBytes();
@@ -119,6 +151,12 @@ public class Requester implements Runnable {
         output.write(request, 0, request.length);
     }
 
+    /**
+     * Jeżeli odpowiedz serwera na request o usunięcie pliku to "yes" (delete&file1.txt&yes)
+     * to plik usuwany jest również lokalnie
+     *
+     * @param input
+     */
     private void isFileDeleted(InputStream input) {
         Scanner scanner = new Scanner(input);
         List<String> list = Arrays.stream(scanner.nextLine().split("&")).collect(Collectors.toList());
@@ -132,6 +170,11 @@ public class Requester implements Runnable {
         }
     }
 
+    /**
+     * Wysyłanie jednego pliku na serwer (bez opóźnienia)
+     *
+     * @throws IOException
+     */
     private void sendOneFileToServer() throws IOException {
         String path = operationData.getFilePath().toString();
         File file = new File(path);
@@ -152,6 +195,12 @@ public class Requester implements Runnable {
         dos.close();
     }
 
+    /**
+     * Wysyłanie wielu plików na serwer
+     * Serwer opóźnia zapis pliku
+     *
+     * @throws IOException
+     */
     private void sendFilesToServer() throws IOException {
         List<String> filesPaths = operationData.filesList;
         BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());

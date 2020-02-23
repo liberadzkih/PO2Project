@@ -4,6 +4,9 @@ import Server.gui.ServerController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Klasa uruchomieniowa dla Serwera
+ */
 public class ServerRun extends Application {
     public static void main(String[] args) {
         launch(args);

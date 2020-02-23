@@ -3,6 +3,9 @@ package User;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Klasa przechowujaca informacje niezbędne do wysłania requestów na serwer
+ */
 public class OperationData {
     enum Operation {DELETE_FILE, INSERT_FILES, GET_FILES, SHARE_FILE}
 

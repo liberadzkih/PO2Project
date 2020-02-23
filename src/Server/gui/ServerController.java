@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * JavaFX controller dla GUI serwera
+ */
 public class ServerController {
     private final Stage thisStage;
     private final String path = "C:\\Users\\Hlibe\\OneDrive\\Pulpit\\po2_project_files\\server_files";
@@ -52,10 +55,18 @@ public class ServerController {
         }
     }
 
+    /**
+     * Metoda wyświetlająca gui
+     */
     public void showStage() {
         thisStage.show();
     }
 
+    /**
+     * Odświeżanie zawartości katalogów serwerowych
+     *
+     * @throws IOException
+     */
     public void refresh() throws IOException {
         listFiles(serverPath, 1, fileList1);
         listFiles(serverPath, 2, fileList2);
@@ -65,6 +76,13 @@ public class ServerController {
         Platform.runLater(() -> fillGuiLists());
     }
 
+    /**
+     * Listuje pliki dla podanego użytkownika
+     *
+     * @param serverPath - scieżka do katalogu serwerowego
+     * @param number     - numer użytkownika/numer listy(list view)
+     * @param list       - lista przechowywująca nazwy plików dla danego usera
+     */
     private void listFiles(Path serverPath, int number, ArrayList<String> list) {
         list.clear();
         try (Stream<Path> walk = Files.walk(serverPath.resolve("user" + number))) {
@@ -80,6 +98,9 @@ public class ServerController {
         }
     }
 
+    /**
+     * Czyszczenie poprzedniej zawartości i uzupełnianie listy plików w serwerowym katalogu użytkownika
+     */
     public void fillGuiLists() {
         list1.getItems().clear();
         list1.getItems().addAll(fileList1);
@@ -93,6 +114,11 @@ public class ServerController {
         list5.getItems().addAll(fileList5);
     }
 
+    /**
+     * Funkcja dodająca wiadomość do logów serwera
+     *
+     * @param text
+     */
     public void addToLogs(String text) {
         Platform.runLater(() -> {
             int logsSize = logs_list.getItems().size();

@@ -3,6 +3,9 @@ package User.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Klasa przechowująca zawartość tekstową dla danego języka
+ */
 public class Languages {
     enum Language {PL, GR, EN}
 

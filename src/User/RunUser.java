@@ -7,6 +7,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+/**
+ * Klasa uruchomieniowa dla użytkownika
+ * Patametry startowe --> username, userpath np. "user1" "C:/home/user1directory"
+ */
 public class RunUser extends Application {
 
     private String username, userpath;
@@ -15,6 +19,11 @@ public class RunUser extends Application {
         launch(args);
     }
 
+    /**
+     * Przypisanie parametrów startowych do zmiennych
+     *
+     * @param parameters - parametry uruchomieniowe programu
+     */
     void setUserParameters(Application.Parameters parameters) {
         this.userpath = parameters.getRaw().get(1);
         this.username = parameters.getRaw().get(0);

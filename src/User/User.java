@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Klasa Uzytkownika zawieracjąca wszystkie funkcjonalnosci ktore user moze wykonac
+ */
 public class User {
     private Path userPath;
     private String userName;
@@ -36,6 +39,9 @@ public class User {
         //loadUserFilesFromDirectory();
     }
 
+    /**
+     * Sprawdza pliki w katalogu użytkownika, gdy lokalna ilość plików jest wieksza niż ta na serverze uruchamia funkcje wysyłajaca plik
+     */
     public void loadUserFilesFromDirectory() {
         try {
             Stream<Path> walk = Files.walk(userPath);
@@ -51,7 +57,7 @@ public class User {
                 Collections.sort(userFilesFromServer);
                 filesToInsert.removeAll(userFilesFromServer);
                 filesToInsert.forEach(e -> System.out.println("Should send file: " + e));
-                
+
                 sendFilesToServer(filesToInsert);
             }
 
@@ -60,6 +66,11 @@ public class User {
         }
     }
 
+    /**
+     * Wysyła request pobierający pliki z serwera
+     *
+     * @throws InterruptedException
+     */
     public void getFilesFromServer() throws InterruptedException {
         OperationData operationData = new OperationData(userName, userPath, userName);
         operationData.setOperation(OperationData.Operation.GET_FILES);
@@ -69,6 +80,12 @@ public class User {
         thread.join();
     }
 
+    /**
+     * Wysyła request usuwajacy plik z serwera
+     *
+     * @param fileName
+     * @throws InterruptedException
+     */
     public void deleteFileFromServer(String fileName) throws InterruptedException {
         OperationData operationData = new OperationData(userName, userPath.resolve(fileName), userName);
         operationData.setOperation(OperationData.Operation.DELETE_FILE);
@@ -78,6 +95,12 @@ public class User {
         thread.join();
     }
 
+    /**
+     * Metoda wysylajaca insertRequest z plikami do katalogu użytkownika
+     *
+     * @param list
+     * @throws InterruptedException
+     */
     public void sendFilesToServer(List<String> list) throws InterruptedException {
         OperationData operationData = new OperationData(userName, userPath, userName);
         operationData.setOperation(OperationData.Operation.INSERT_FILES);
@@ -88,6 +111,13 @@ public class User {
         thread.join();
     }
 
+    /**
+     * Metoda wysylajaca plik do katalogu innego usera
+     *
+     * @param fileName
+     * @param targetUser
+     * @throws InterruptedException
+     */
     public void sendFileToAnotherUser(String fileName, String targetUser) throws InterruptedException {
         OperationData operationData = new OperationData(userName, userPath.resolve(fileName), targetUser);
         operationData.setOperation(OperationData.Operation.SHARE_FILE);
@@ -97,6 +127,12 @@ public class User {
         thread.join();
     }
 
+    /**
+     * Usuwa plik z lokalnego katalogu usera
+     *
+     * @param fileName
+     * @return
+     */
     public boolean deleteFileFromDirectory(String fileName) {
         File file = new File(userPath.resolve(fileName).toString());
         return file.delete();

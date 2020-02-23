@@ -20,6 +20,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+/**
+ * Klasa odpowiedzialna za GUI użytkownika
+ */
+
 public class UserController {
     private final Stage thisStage;
     private User user;
@@ -50,10 +54,18 @@ public class UserController {
         }
     }
 
+    /**
+     * Metoda wyświetlająca gui
+     */
     public void showStage() {
         thisStage.show();
     }
 
+    /**
+     * Przypisanie Klasy User do kontrolera
+     *
+     * @param user - obiekt klasy User
+     */
     public void setUser(User user) {
         this.user = user;
         thisStage.setTitle(user.getUserName());
@@ -61,6 +73,11 @@ public class UserController {
         user_path_label.setText(user.getUserPath().toString());
     }
 
+    /**
+     * Przypisanie listy plikow do listview w GUI użytkownika
+     *
+     * @param list - Lista scieżek do plików użytkownika
+     */
     public void initUserDirectory(List<String> list) {
         Platform.runLater(() -> {
             files_list_listView.getItems().clear();
@@ -68,6 +85,9 @@ public class UserController {
         });
     }
 
+    /**
+     * Metoda inicjująca username'y
+     */
     private void initUserNames() {
         users_combobox.getItems().clear();
         users_combobox.getItems().add("user1");
@@ -77,23 +97,44 @@ public class UserController {
         users_combobox.getItems().add("user5");
     }
 
+    /**
+     * Metoda pobierająca odpowiedni label z klasy Languages i przypisująca zawartość do labela opisującego wykonywaną akcję
+     *
+     * @param label - np "LBL_SHARE"
+     */
     public void changeInfoLog(String label) {
         Platform.runLater(() -> {
             current_status_label.setText(languages.getLabel(label));
         });
     }
 
+    /**
+     * to samo co wyżej tylko z dodatkowym tekstem
+     *
+     * @param label
+     * @param text
+     */
     public void changeInfoLog(String label, String text) {
         Platform.runLater(() -> {
             current_status_label.setText(languages.getLabel(label) + text);
         });
     }
 
+    /**
+     * Metoda usuwająca plik z listy użytkownika
+     *
+     * @throws InterruptedException
+     */
     @FXML
     public void deleteFileAction() throws InterruptedException {
         user.deleteFileFromServer(files_list_listView.getSelectionModel().getSelectedItem().toString());
     }
 
+    /**
+     * Metoda uruchamiana pod przyciskiem "Dodaj nowy plik"
+     *
+     * @throws IOException
+     */
     @FXML
     public void chooseFile() throws IOException {
         try {
@@ -108,6 +149,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Metoda uruchamiana pod przyciskiem "Udostępnij"
+     *
+     * @throws InterruptedException
+     */
     @FXML
     public void shareFile() throws InterruptedException {
         user.sendFileToAnotherUser(
@@ -116,6 +162,9 @@ public class UserController {
         );
     }
 
+    /**
+     * Zmienia zawartość statycznych napisów gdy użytkownik zmieni język w GUI
+     */
     private void updateGuiLabels() {
         txt1_label.setText(languages.getLabel("LBL_USER"));
         txt2_label.setText(languages.getLabel("LBL_PATH"));
@@ -125,18 +174,27 @@ public class UserController {
         deleteSelectedFile_button.setText(languages.getLabel("LBL_DELETEFILE"));
     }
 
+    /**
+     * Metoda odpowiedzialne za zmiane języka na Polski
+     */
     @FXML
     public void setLanguagePL() {
         languages.setLanguage(Languages.Language.PL);
         updateGuiLabels();
     }
 
+    /**
+     * Metoda odpowiedzialne za zmiane języka na Niemiecki
+     */
     @FXML
     public void setLanguageGR() {
         languages.setLanguage(Languages.Language.GR);
         updateGuiLabels();
     }
 
+    /**
+     * Metoda odpowiedzialne za zmiane języka na Angielski
+     */
     @FXML
     public void setLanguageEN() {
         languages.setLanguage(Languages.Language.EN);

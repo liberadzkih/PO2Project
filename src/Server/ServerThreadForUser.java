@@ -13,6 +13,9 @@ import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Klasa zawierająca Wątek dla Usera
+ */
 public class ServerThreadForUser implements Runnable {
     private Socket socket;
     private OperationData operationData;
@@ -25,6 +28,9 @@ public class ServerThreadForUser implements Runnable {
         this.serverController = serverController;
     }
 
+    /**
+     * Metoda run() przyjmująca request użytkownika
+     */
     @Override
     public void run() {
         String info = getInfoFromUserRequest();
@@ -76,6 +82,12 @@ public class ServerThreadForUser implements Runnable {
         return new String(info);
     }
 
+    /**
+     * Wysyłanie plików do użytkownika(z wyjątkiem pliku user.txt)
+     *
+     * @param username
+     * @throws IOException
+     */
     private void sendFilesToUser(String username) throws IOException {
         String directory = serverPath.resolve(username.trim()).toString();
         File[] files = new File(directory).listFiles();
@@ -101,6 +113,13 @@ public class ServerThreadForUser implements Runnable {
         dos.close();
     }
 
+    /**
+     * Funkcja usuwająca plik z katalogu serwerowego
+     *
+     * @param username
+     * @param filename
+     * @return
+     */
     private boolean deleteFile(String username, String filename) {
         String filePath = serverPath.resolve(username.trim()).resolve(filename.trim()).toString();
         File file = new File(filePath);
@@ -108,6 +127,13 @@ public class ServerThreadForUser implements Runnable {
         return file.delete();
     }
 
+    /**
+     * Funkcja przyjmująca pliki od użytkownika
+     *
+     * @param username
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private void getFilesFromUser(String username) throws IOException, InterruptedException {
 
         BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
@@ -144,6 +170,13 @@ public class ServerThreadForUser implements Runnable {
 
     }
 
+    /**
+     * Funkcja umieszczająca nazwy plikow z katalogu w pliku user.txt
+     *
+     * @param username
+     * @param file
+     * @throws IOException
+     */
     private void userTxtFileInsertFileName(String username, File file) throws IOException {
         lock.lock();
         try {
@@ -164,6 +197,12 @@ public class ServerThreadForUser implements Runnable {
         }
     }
 
+    /**
+     * Funkcja usuwająca nazwy plików z pliku user.txt
+     *
+     * @param username
+     * @param file
+     */
     private void userTxtFileRemoveFileName(String username, File file) {
         lock.lock();
         try {
