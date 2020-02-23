@@ -51,17 +51,17 @@
                 </HBox>
                 <HBox minWidth="-Infinity" prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button fx:id="en_button" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="English" textAlignment="CENTER">
+                        <Button fx:id="en_button" minWidth="-Infinity" mnemonicParsing="false" onAction="#setLanguageEN" prefWidth="150.0" text="English" textAlignment="CENTER">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </Button>
-                        <Button fx:id="pl_button" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Polski">
+                        <Button fx:id="pl_button" minWidth="-Infinity" mnemonicParsing="false" onAction="#setLanguagePL" prefWidth="150.0" text="Polski">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </Button>
-                        <Button fx:id="gr_button" mnemonicParsing="false" prefWidth="150.0" text="Deutsch">
+                        <Button fx:id="gr_button" mnemonicParsing="false" onAction="#setLanguageGR" prefWidth="150.0" text="Deutsch">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0" />
                             </HBox.margin>

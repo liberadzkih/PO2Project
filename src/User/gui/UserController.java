@@ -23,7 +23,7 @@ import java.util.List;
 public class UserController {
     private final Stage thisStage;
     private User user;
-    public int userFilesCount = 0;
+    private Languages languages;
     @FXML
     private ComboBox<String> users_combobox;
     @FXML
@@ -42,8 +42,9 @@ public class UserController {
             loader.setController(this);
             thisStage.setScene(new Scene(loader.load(), 600, 400));
             thisStage.setOnCloseRequest(event -> System.exit(0));
-            current_status_label.setText("Jeszcze nie wykonano akcji");
             initUserNames();
+            languages = new Languages(Languages.Language.PL);
+            setLanguagePL();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,9 +77,15 @@ public class UserController {
         users_combobox.getItems().add("user5");
     }
 
-    public void changeInfoLog(String text) {
+    public void changeInfoLog(String label) {
         Platform.runLater(() -> {
-            current_status_label.setText(text);
+            current_status_label.setText(languages.getLabel(label));
+        });
+    }
+
+    public void changeInfoLog(String label, String text) {
+        Platform.runLater(() -> {
+            current_status_label.setText(languages.getLabel(label) + text);
         });
     }
 
@@ -107,5 +114,32 @@ public class UserController {
                 files_list_listView.getSelectionModel().getSelectedItem().toString(),
                 users_combobox.getSelectionModel().getSelectedItem()
         );
+    }
+
+    private void updateGuiLabels() {
+        txt1_label.setText(languages.getLabel("LBL_USER"));
+        txt2_label.setText(languages.getLabel("LBL_PATH"));
+        txt3_label.setText(languages.getLabel("LBL_SHARESELECTEDFILE"));
+        share_button.setText(languages.getLabel("LBL_SHARE"));
+        addNewFile_button.setText(languages.getLabel("LBL_ADDFILE"));
+        deleteSelectedFile_button.setText(languages.getLabel("LBL_DELETEFILE"));
+    }
+
+    @FXML
+    public void setLanguagePL() {
+        languages.setLanguage(Languages.Language.PL);
+        updateGuiLabels();
+    }
+
+    @FXML
+    public void setLanguageGR() {
+        languages.setLanguage(Languages.Language.GR);
+        updateGuiLabels();
+    }
+
+    @FXML
+    public void setLanguageEN() {
+        languages.setLanguage(Languages.Language.EN);
+        updateGuiLabels();
     }
 }

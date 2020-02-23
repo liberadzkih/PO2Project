@@ -40,7 +40,7 @@ public class RunUser extends Application {
             try {
                 while (user.isReadyForNextOperations = true) {
                     user.getFilesFromServer();
-                    userController.changeInfoLog("Pobieranie zawartosci dysku z serwera");
+                    userController.changeInfoLog("LBL_DOWNLOADFROMSERVER");
                     Thread.sleep(10000);
                 }
             } catch (Exception e) {
@@ -54,7 +54,7 @@ public class RunUser extends Application {
             try {
                 Thread.sleep(2000);
                 while (true) {
-                    userController.changeInfoLog("Ladowanie plików z katalogu uzytkownika");
+                    userController.changeInfoLog("LBL_LOADUSERDIRECTORY");
                     user.loadUserFilesFromDirectory();
                     Thread.sleep(5000);
                 }

@@ -52,6 +52,7 @@ public class Requester implements Runnable {
                 input = socket.getInputStream();
                 sendRequestForSave(output);
                 sendFilesToServer();
+                userController.changeInfoLog("Wysyłanie pliku/plików na serwer");
                 break;
             }
             case SHARE_FILE: {
@@ -59,6 +60,7 @@ public class Requester implements Runnable {
                 input = socket.getInputStream();
                 sendRequestForSave(output);
                 sendOneFileToServer();
+                userController.changeInfoLog("Wysyłanie pliku do użytkownika");
                 break;
             }
             case DELETE_FILE: {
@@ -66,6 +68,7 @@ public class Requester implements Runnable {
                 input = socket.getInputStream();
                 sendRequestForDeleteFile(output);
                 isFileDeleted(input);
+                userController.changeInfoLog("Usuwanie pliku");
                 break;
             }
         }
@@ -120,7 +123,7 @@ public class Requester implements Runnable {
         List<String> list = Arrays.stream(scanner.nextLine().split("&")).collect(Collectors.toList());
         if (list.get(0).trim().equals("delete")) {
             if (list.get(2).trim().equals("yes") && user.deleteFileFromDirectory(list.get(1).trim())) {
-                userController.changeInfoLog("Usunieto plik " + list.get(1).trim());
+                userController.changeInfoLog("LBL_DELETEDFILE" + list.get(1).trim());
                 user.loadUserFilesFromDirectory();
             } else {
                 //cannot delete file alert
