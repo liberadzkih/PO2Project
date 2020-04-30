@@ -26,3 +26,18 @@ C. Serwer:
 D. Zaproponuj liste testow jednostkowych opracowanych w JUnit, osobno dla klienta i serwera obejmujacych kluczowe operacje wykonywane przez kazdego z nich.
 
 E. Powyzsza implementacja pozwala na uzyskanie oceny 4. W celu uzyskania oceny 5 nalezy zaimplementowac dodatkowe funkcjonalnosci (uogolniajac: mozna zaproponowac dwie funkcjonalnosci, z ktorych kazda podnosi ocene o 0,5) uzgodnione z prowadzacym. Uzgodnienie tych funkcjonalnosci musi nastapic najpozniej na laboratorium nr 10.
+
+
+
+
+Wymagane jest utworzenie katalogów dla userów, i ich serverowych odpowiedników,
+w moim przypadku:
+
+C:\Users\Hlibe\OneDrive\Pulpit\po2_project_files\server_files\user1
+C:\Users\Hlibe\OneDrive\Pulpit\po2_project_files\server_files\user2
+...
+...
+C:\Users\Hlibe\OneDrive\Pulpit\po2_project_files\user_files\user1
+C:\Users\Hlibe\OneDrive\Pulpit\po2_project_files\user_files\user2
+...
+...
